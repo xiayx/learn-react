@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Thinking In React.html</title>
+    <script src="/readme/react/static/react.development.js"></script>
+    <script src="/readme/react/static/react-dom.development.js"></script>
+    <script src="/readme/react/static/babel.min.js"></script>
+</head>
+<body>
+<div id="container"></div>
+<script type="text/babel">
+    class ProductCategoryRow extends React.Component {
+        render() {
+            const category = this.props.category;
+            return (
+                    <tr>
+                        <th colSpan="2">
+                            {category}
+                        </th>
+                    </tr>
+            );
+        }
+    }
+
+    class ProductRow extends React.Component {
+        render() {
+            const product = this.props.product;
+            const name = product.stocked ?
+                product.name :
+                    <span style={{color: 'red'}}>
+        {product.name}
+      </span>;
+
+            return (
+                    <tr>
+                        <td>{name}</td>
+                        <td>{product.price}</td>
+                    </tr>
+            );
+        }
+    }
+
+    class ProductTable extends React.Component {
+        render() {
+            const rows = [];
+            let lastCategory = null;
+
+            this.props.products.forEach((product) => {
+                if (product.category !== lastCategory) {
+                    rows.push(
+                            <ProductCategoryRow
+                                    category={product.category}
+                                    key={product.category}/>
+                    );
+                }
+                rows.push(
+                        <ProductRow
+                                product={product}
+                                key={product.name}/>
+                );
+                lastCategory = product.category;
+            });
+
+            return (
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>{rows}</tbody>
+                    </table>
+            );
+        }
+    }
+
+    class SearchBar extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                stocked: false,
+                searchValue: ''
+            };
+
+        }
+
+        handleSearchValueChange(e) {
+            this.setState({searchValue: e.target.value});
+            this.props.onSearchValueChange(e.target.value);
+        }
+
+        handleStockedChange(e) {
+            this.setState({stocked: e.target.checked});
+            this.props.onStockedChange(e.target.checked);
+        }
+
+
+        render() {
+            return (
+                    <form>
+                        <input type="text" placeholder="Search..." value={this.state.searchValue} onChange={e => this.handleSearchValueChange(e)}/>
+                        <p>
+                            <input type="checkbox" value="" checked={this.state.stocked} onClick={e => this.handleStockedChange(e)}/>
+                            {' '}
+                            Only show products in stock
+                        </p>
+                    </form>
+            );
+        }
+    }
+
+    class FilterableProductTable extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                searchValue: '',
+                stocked: false
+            };
+        }
+
+        handleSearchValueChange(value) {
+            this.setState({
+                searchValue: value
+            });
+        }
+
+        handleStockedChange(value) {
+            this.setState({
+                stocked: value
+            });
+        }
+
+        render() {
+            let pattern = new RegExp(this.state.searchValue, 'i');
+            let products = this.props.products.filter(product => pattern.test(product.name) && (this.state.stocked ? product.stocked : true));
+
+            return (
+                    <div>
+                        <SearchBar onSearchValueChange={value => this.handleSearchValueChange(value)}
+                                   onStockedChange={value => this.handleStockedChange(value)}
+                        />
+                        <ProductTable products={products}/>
+                    </div>
+            );
+        }
+    }
+
+
+    const PRODUCTS = [
+        {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
+        {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
+        {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
+        {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
+        {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
+        {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
+    ];
+
+    ReactDOM.render(
+            <FilterableProductTable products={PRODUCTS}/>,
+        document.getElementById('container')
+    );
+
+</script>
+</body>
+</html>

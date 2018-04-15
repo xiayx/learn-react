@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hello World</title>
+    <script src="/readme/react/static/react.development.js"></script>
+    <script src="/readme/react/static/react-dom.development.js"></script>
+    <script src="/readme/react/static/babel.min.js"></script>
+</head>
+<body>
+<div id="clockInterval"></div>
+
+<div id="clockReact"></div>
+
+<script type="text/babel">
+    function ClockInterval(props) {
+        return (
+                <div>
+                    <h1>ClockInterval</h1>
+                    <h2>It is {props.date.toLocaleTimeString()}.</h2>
+                </div>
+        );
+    }
+
+    function tick() {
+        ReactDOM.render(
+                <ClockInterval date={new Date()}/>,
+            document.getElementById('clockInterval')
+        );
+    }
+
+    tick();
+    setInterval(tick, 1000);
+
+    class ClockReact extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {date: new Date()};
+        }
+
+        componentDidMount() {
+            this.timerID = setInterval(() => this.tick(), 1000);
+        }
+
+        componentWillUnmount() {
+            clearInterval(this.timerID);
+        }
+
+        tick() {
+            this.setState({date: new Date()});
+        }
+
+        render() {
+            return (
+                    <div>
+                        <h1>ClockReact</h1>
+                        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+                    </div>
+            );
+        }
+    }
+
+    ReactDOM.render(
+        (
+                <div>
+                    <ClockReact/>
+                    <ClockReact/>
+                    <ClockReact/>
+                </div>
+        ),
+        document.getElementById('clockReact')
+    );
+
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+= React
+xiayx <xiayouxue@hotmail.com>
+v1.0, 2018-04-14: SNAPSHOT
+:doctype: docbook
+:toc: left
+:numbered:
+:imagesdir: assets/images
+:source-highlighter: highlightjs
+
+记录学习React的历程。
+
+.相关链接
+* https://reactjs.org/[官网地址]
+* http://react-china.org/[中文地址]
+
+== 从官网学习
+创建目录``reactjs``作为官网学习的源码目录。
+
+=== https://reactjs.org/docs/hello-world.html[Docs]
+创建``Docs``目录作为Docs的源码目录。
+遵循右侧的菜单，逐步学习。
+
+.Docs界面
+image::docs/ui.jpg[]
+
+每一小节的示例建立了一个对应的文件。
+
+==== INSTALLATION
+从官网下载``single-file-example.html``，存放在``Docs``目录下。
+
+.本地模式
+[source%nowrap,js]
+----
+include::reactjs/Docs/single-file-example.html[]
+----
+通过``ReactDOM.render``将``<h1>Hello, world!</h1>``作为``#root``的innerHTML。
+
+将js保存在本地的``static``目录下。
+拷贝``single-file-example.html``，命名为``template.html``，js修改为本地引用。
+
+[qanda]
+react.development和react-dom.development的区别？:: 未知
+babel.min.js的作用？:: 配合``<script type="text/babel">``转码 JSX
+JSX 是什么？:: 参考 http://facebook.github.io/jsx/[JSX官网]
+
+
+
+//== react-devtools
+//链接：https://fb.me/react-devtools
+//
+//安装需要翻墙。
+
+
+
+
+
+
+
+
+
